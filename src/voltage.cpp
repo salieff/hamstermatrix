@@ -27,7 +27,7 @@ void Voltage::work(void)
     if ((millis() - m_lastTime) < m_sleepTime)
         return;
 
-    printVoltages();
+    Serial.printf("Motor = %d\r\n", analogRead(m_pinForward) - analogRead(m_pinBackward));
     m_lastTime = millis();
 }
 
@@ -39,10 +39,6 @@ void Voltage::start(void)
 void Voltage::stop(void)
 {
     m_active = false;
-}
-
-void Voltage::printVoltages(void)
-{
 }
 
 

@@ -8,11 +8,11 @@ namespace hamstermatrix {
 
 
 class Triggers {
-public:    
+public:
     Triggers(uint8_t pinLeft, uint8_t pinRight, unsigned long holdTime = 100);
 
     void setup(void);
-    void work(void);    
+    void work(void);
     void sendSequence(uint8_t seq);
 
 private:
@@ -34,7 +34,7 @@ private:
     static constexpr const int BITS_COUNT = 6;
 
     void startNextBit(void);
-    void startBlank(void);
+    void startBlank(bool lastBlank);
 };
 
 

@@ -23,8 +23,6 @@ private:
     unsigned long m_sleepTime;
     unsigned long m_lastTime = 0;
     bool m_active = false;
-
-    void printVoltages(void);
 };
 
 

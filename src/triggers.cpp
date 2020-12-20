@@ -28,11 +28,7 @@ void Triggers::work(void)
     switch (m_state)
     {
     case BIT:
-        if (m_bitPosition >= (BITS_COUNT - 1))
-            m_state = IDLE;
-        else
-            startBlank();
-
+        startBlank(m_bitPosition >= (BITS_COUNT - 1));
         break;
 
     case BLANK:
@@ -55,20 +51,21 @@ void Triggers::startNextBit(void)
 {
     ++m_bitPosition;
 
+    Serial.printf("Triggers: %d %d\r\n", HIGH, (m_bitSequence & (1 << m_bitPosition)) ? HIGH : LOW);
     digitalWrite(m_pinLeft, HIGH);
-    digitalWrite(m_pinRight, (m_bitSequence & (1 >> m_bitPosition)) ? HIGH : LOW);
+    digitalWrite(m_pinRight, (m_bitSequence & (1 << m_bitPosition)) ? HIGH : LOW);
 
     m_startTime = millis();
     m_state = BIT;
 }
 
-void Triggers::startBlank(void)
+void Triggers::startBlank(bool lastBlank)
 {
     digitalWrite(m_pinLeft, LOW);
     digitalWrite(m_pinRight, LOW);
 
     m_startTime = millis();
-    m_state = BLANK;
+    m_state = lastBlank ? IDLE : BLANK;
 }
 
 } // namespace hamstermatrix
