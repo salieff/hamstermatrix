@@ -40,9 +40,10 @@ void Triggers::work(void)
     }
 }
 
-void Triggers::sendSequence(uint8_t seq)
+void Triggers::sendSequence(uint8_t seq, bool reverse)
 {
     m_bitSequence = seq;
+    m_reverseMode = reverse;
     m_bitPosition = -1;
     startNextBit();
 }
@@ -51,9 +52,23 @@ void Triggers::startNextBit(void)
 {
     ++m_bitPosition;
 
-    Serial.printf("Triggers: %d %d\r\n", HIGH, (m_bitSequence & (1 << m_bitPosition)) ? HIGH : LOW);
-    digitalWrite(m_pinLeft, HIGH);
-    digitalWrite(m_pinRight, (m_bitSequence & (1 << m_bitPosition)) ? HIGH : LOW);
+    uint8_t leftVal = 0;
+    uint8_t rightVal = 0;
+
+    if (m_reverseMode)
+    {
+        rightVal = HIGH;
+        leftVal = (m_bitSequence & (1 << (BITS_COUNT - 1 - m_bitPosition))) ? HIGH : LOW;
+    }
+    else
+    {
+        leftVal = HIGH;
+        rightVal = (m_bitSequence & (1 << m_bitPosition)) ? HIGH : LOW;
+    }
+
+    Serial.printf("[[HMSTRMTRX]] TRIGGERS %d %d\r\n", leftVal, rightVal);
+    digitalWrite(m_pinLeft, leftVal);
+    digitalWrite(m_pinRight, rightVal);
 
     m_startTime = millis();
     m_state = BIT;

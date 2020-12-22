@@ -22,6 +22,25 @@ static hamstermatrix::Triggers Triggers(TRIGGER_LEFT_GPIO, TRIGGER_RIGHT_GPIO);
 static hamstermatrix::Voltage MotorVoltage(MOTOR_FORWARD_GPI, MOTOR_BACKWARD_GPI);
 
 
+void printHelp(void)
+{
+    Serial.println();
+    Serial.println("Hamster Matrix");
+    Serial.println();
+    Serial.println("? - this help topic");
+    Serial.println("1 - Start hamster");
+    Serial.println("2 - Send BATH_CODE");
+    Serial.println("3 - Send BATH_CODE in reverse order");
+    Serial.println("4 - Send WHEEL_CODE");
+    Serial.println("5 - Send WHEEL_CODE in reverse order");
+    Serial.println("6 - Send DISCO_CODE");
+    Serial.println("7 - Send DISCO_CODE in reverse order");
+    Serial.println("8 - Send POOL_CODE");
+    Serial.println("9 - Send POOL_CODE in reverse order");
+    Serial.println("0 - Stop hamster");
+    Serial.println();
+}
+
 void processConsoleInput(void)
 {
     if (Serial.available() <= 0)
@@ -29,30 +48,50 @@ void processConsoleInput(void)
 
     switch(Serial.read())
     {
-        case '1':
-            BackButton.click();
-            MotorVoltage.start();
+    case '?':
+        printHelp();
         break;
 
-        case '2':
-            Triggers.sendSequence(BATH_CODE);
+    case '1':
+        BackButton.click();
+        MotorVoltage.start();
         break;
 
-        case '3':
-            Triggers.sendSequence(WHEEL_CODE);
+    case '2':
+        Triggers.sendSequence(BATH_CODE);
         break;
 
-        case '4':
-            Triggers.sendSequence(DISCO_CODE);
+    case '3':
+        Triggers.sendSequence(BATH_CODE, hamstermatrix::Triggers::REVERSE_MODE);
         break;
 
-        case '5':
-            Triggers.sendSequence(POOL_CODE);
+    case '4':
+        Triggers.sendSequence(WHEEL_CODE);
         break;
 
-        case '6':
-            BackButton.click();
-            MotorVoltage.stop();
+    case '5':
+        Triggers.sendSequence(WHEEL_CODE, hamstermatrix::Triggers::REVERSE_MODE);
+        break;
+
+    case '6':
+        Triggers.sendSequence(DISCO_CODE);
+        break;
+
+    case '7':
+        Triggers.sendSequence(DISCO_CODE, hamstermatrix::Triggers::REVERSE_MODE);
+        break;
+
+    case '8':
+        Triggers.sendSequence(POOL_CODE);
+        break;
+
+    case '9':
+        Triggers.sendSequence(POOL_CODE, hamstermatrix::Triggers::REVERSE_MODE);
+        break;
+
+    case '0':
+        BackButton.click();
+        MotorVoltage.stop();
         break;
     }
 
@@ -62,16 +101,8 @@ void setup(void)
 {
     Serial.begin(115200);
     Serial.flush();
-    Serial.println();
-    Serial.println("Hamster Matrix");
-    Serial.println();
-    Serial.println("1 - Start hamster");
-    Serial.println("2 - Send BATH_CODE");
-    Serial.println("3 - Send WHEEL_CODE");
-    Serial.println("4 - Send DISCO_CODE");
-    Serial.println("5 - Send POOL_CODE");
-    Serial.println("6 - Stop hamster");
-    Serial.println();
+
+    printHelp();
 
     BackButton.setup();
     Triggers.setup();

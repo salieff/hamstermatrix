@@ -1,1 +1,1 @@
-src/hamstermatrix.ino
+hamstermatrix/hamstermatrix.ino

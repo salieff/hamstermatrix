@@ -27,7 +27,7 @@ void Voltage::work(void)
     if ((millis() - m_lastTime) < m_sleepTime)
         return;
 
-    Serial.printf("Motor = %d\r\n", analogRead(m_pinForward) - analogRead(m_pinBackward));
+    Serial.printf("[[HMSTRMTRX]] MOTOR %d\r\n", analogRead(m_pinForward) - analogRead(m_pinBackward));
     m_lastTime = millis();
 }
 

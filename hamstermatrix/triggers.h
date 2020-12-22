@@ -9,11 +9,13 @@ namespace hamstermatrix {
 
 class Triggers {
 public:
-    Triggers(uint8_t pinLeft, uint8_t pinRight, unsigned long holdTime = 100);
+    constexpr static const bool REVERSE_MODE = true;
+
+    Triggers(uint8_t pinLeft, uint8_t pinRight, unsigned long holdTime = 50);
 
     void setup(void);
     void work(void);
-    void sendSequence(uint8_t seq);
+    void sendSequence(uint8_t seq, bool reverse = false);
 
 private:
     enum State
@@ -30,6 +32,7 @@ private:
     uint8_t m_bitSequence = 0;
     int m_bitPosition = -1;
     unsigned long m_startTime = 0;
+    bool m_reverseMode = false;
 
     static constexpr const int BITS_COUNT = 6;
 
