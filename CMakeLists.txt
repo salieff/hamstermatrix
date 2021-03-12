@@ -27,7 +27,7 @@ add_compile_definitions(
     CORE_DEBUG_LEVEL=0
     ARDUINO_LIB_DISCOVERY_PHASE)
 
-set(ESP32_DIR "$ENV{HOME}/.arduino15/packages/esp32/hardware/esp32/1.0.4")
+set(ESP32_DIR "$ENV{HOME}/.arduino15/packages/esp32/hardware/esp32/1.0.5")
 set(ESP32_SDK_INCLUDE "${ESP32_DIR}/tools/sdk/include")
 
 include_directories(
