@@ -16,12 +16,14 @@ public:
     void work(void);
     void start(void);
     void stop(void);
+    unsigned long sinceLastAction(void);
 
 private:
     uint8_t m_pinForward;
     uint8_t m_pinBackward;
     unsigned long m_sleepTime;
     unsigned long m_lastTime = 0;
+    unsigned long m_lastActiveTime = 0;
     bool m_active = false;
 };
 

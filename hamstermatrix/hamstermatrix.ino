@@ -11,41 +11,12 @@ constexpr static const uint8_t TRIGGER_LEFT_GPIO = 25;
 constexpr static const uint8_t TRIGGER_RIGHT_GPIO = 26;
 constexpr static const uint8_t BUTTON_BACK_GPIO = 33; // кнопка на спине
 
-/*
-constexpr static const uint8_t BATH_CODE  = 5;  // 000101 <-- Первый бит справа
-constexpr static const uint8_t WHEEL_CODE = 9;  // 001001 <-- Первый бит справа
-constexpr static const uint8_t DISCO_CODE = 17; // 010001 <-- Первый бит справа
-constexpr static const uint8_t POOL_CODE  = 19; // 010011 <-- Первый бит справа
-*/
-
-
 static hamstermatrix::Button BackButton(BUTTON_BACK_GPIO);
 static hamstermatrix::Triggers Triggers(TRIGGER_LEFT_GPIO, TRIGGER_RIGHT_GPIO);
 static hamstermatrix::Voltage MotorVoltage(MOTOR_FORWARD_GPI, MOTOR_BACKWARD_GPI);
 
 static String UARTBuffer;
 
-
-/*
-void printHelp(void)
-{
-    Serial.println();
-    Serial.println("Hamster Matrix");
-    Serial.println();
-    Serial.println("? - this help topic");
-    Serial.println("1 - Start hamster");
-    Serial.println("2 - Send BATH_CODE");
-    Serial.println("3 - Send BATH_CODE in reverse order");
-    Serial.println("4 - Send WHEEL_CODE");
-    Serial.println("5 - Send WHEEL_CODE in reverse order");
-    Serial.println("6 - Send DISCO_CODE");
-    Serial.println("7 - Send DISCO_CODE in reverse order");
-    Serial.println("8 - Send POOL_CODE");
-    Serial.println("9 - Send POOL_CODE in reverse order");
-    Serial.println("0 - Stop hamster");
-    Serial.println();
-}
-*/
 
 void processConsoleInput(void)
 {
@@ -74,7 +45,11 @@ void processConsoleInput(void)
 
         if (str.startsWith("STOP"))
         {
-            BackButton.click();
+            // Если мотор стоит больше 10 секунд, значит хомяк уже выключился сам,
+            // и нажимать кнопку не надо, а то опять включится
+            if (MotorVoltage.sinceLastAction() < 10000)
+                BackButton.click();
+
             MotorVoltage.stop();
             return;
         }

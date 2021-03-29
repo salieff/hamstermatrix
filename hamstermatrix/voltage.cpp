@@ -17,6 +17,7 @@ void Voltage::setup(void)
     pinMode(m_pinBackward, INPUT);
 
     m_lastTime = millis();
+    m_lastActiveTime = millis();
 }
 
 void Voltage::work(void)
@@ -27,8 +28,12 @@ void Voltage::work(void)
     if ((millis() - m_lastTime) < m_sleepTime)
         return;
 
-    Serial.printf("[[HMSTRMTRX]] MOTOR %d\r\n", analogRead(m_pinForward) - analogRead(m_pinBackward));
+    int motorVoltage = analogRead(m_pinForward) - analogRead(m_pinBackward);
+    Serial.printf("[[HMSTRMTRX]] MOTOR %d\r\n", motorVoltage);
     m_lastTime = millis();
+
+    if (motorVoltage != 0)
+        m_lastActiveTime = m_lastTime;
 }
 
 void Voltage::start(void)
@@ -41,5 +46,9 @@ void Voltage::stop(void)
     m_active = false;
 }
 
+unsigned long Voltage::sinceLastAction(void)
+{
+    return millis() - m_lastActiveTime;
+}
 
 } // namespace hamstermatrix

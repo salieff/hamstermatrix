@@ -49,6 +49,7 @@ set boxwidth 0.5
 set style fill solid
 set grid
 set xrange [ -3 : 251 ]
+set yrange [ -3000 : 3000 ]
 set lmargin at screen 0
 set rmargin at screen 1
 set tmargin at screen 1
